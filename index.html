@@ -1,129 +1,465 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sanketh Marampally | Profile</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sanketh Marampally — Portfolio</title>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Google fonts & icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
 
   <style>
-    body {
-      background-color: #500000; /* Texas A&M Maroon */
-      color: #fff;
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    :root{
+      --bg-1: #120005;
+      --bg-2: #4b0000; /* maroon accent */
+      --muted: #cfc9c9;
+      --accent: #a94442;
+      --glass: rgba(255,255,255,0.06);
+      --card: rgba(255,255,255,0.03);
+      --radius: 14px;
     }
 
-    .card {
-      background: #ffffff1a;
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      padding: 40px;
-      text-align: center;
-      width: 350px;
-      transition: transform 0.3s ease;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #ffffff;
+      background: linear-gradient(180deg, var(--bg-1) 0%, #2b0000 55%);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
     }
 
-    .card:hover {
-      transform: translateY(-5px);
+    /* Layout */
+    .wrapper{
+      max-width:1100px;
+      margin:40px auto;
+      padding:28px;
     }
 
-    .logo {
-      width: 80px;
-      height: auto;
-      margin-bottom: 10px;
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:32px;
     }
 
-    .avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 10px auto;
-      border: 3px solid #fff;
-      display: block;
+    /* logo / brand */
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .brand img{
+      width:46px;
+      height:46px;
+      border-radius:10px;
+      object-fit:cover;
+      border:2px solid rgba(255,255,255,0.06);
+      box-shadow:0 6px 18px rgba(0,0,0,0.6);
+    }
+    .brand h4{
+      margin:0;
+      font-size:0.95rem;
+      letter-spacing:0.6px;
+      font-weight:700;
+    }
+    .brand p{
+      margin:0;
+      font-size:0.75rem;
+      color:var(--muted);
+      margin-top:2px;
     }
 
-    h1 {
-      font-size: 1.6rem;
-      margin: 10px 0 5px 0;
-      font-weight: 600;
+    nav{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    nav a{
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      font-size:0.9rem;
+      padding:8px 12px;
+      border-radius:10px;
+      transition:all .18s ease;
+    }
+    nav a:hover{ color:#fff; background:var(--glass); transform:translateY(-2px) }
+
+    /* HERO */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:28px;
+      align-items:center;
+      margin-bottom:40px;
     }
 
-    p {
-      font-size: 0.95rem;
-      margin: 5px 0 15px;
-      color: #ddd;
+    .hero-left{
+      padding:18px 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+      border-radius:var(--radius);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+    .eyebrow{
+      display:inline-block;
+      background: rgba(255,255,255,0.04);
+      padding:6px 10px;
+      border-radius:999px;
+      color:var(--muted);
+      font-size:0.8rem;
+      margin-bottom:12px;
+    }
+    h1{
+      margin:6px 0 10px 0;
+      font-size:2.4rem;
+      line-height:1.02;
+      letter-spacing:-1px;
+      font-weight:800;
+      color:#fff;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-bottom:18px;
+      max-width:70%;
+    }
+    .cta-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-top:12px;
+    }
+    .btn{
+      background:#fff;
+      color:var(--bg-2);
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:700;
+      text-decoration:none;
+      box-shadow:0 8px 18px rgba(0,0,0,0.4);
+      transition:transform .16s ease;
+    }
+    .btn:hover{ transform:translateY(-3px) }
+
+    .ghost{
+      border:1px solid rgba(255,255,255,0.08);
+      color:var(--muted);
+      padding:9px 14px;
+      border-radius:10px;
+      text-decoration:none;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-weight:600;
     }
 
-    .button {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #fff;
-      color: #500000;
-      border-radius: 25px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
+    /* hero right - profile card */
+    .profile-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border-radius:16px;
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.04);
+    }
+    .avatar{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      object-fit:cover;
+      object-position:center;
+      border:4px solid rgba(255,255,255,0.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+    .role{
+      color:var(--muted);
+      font-size:0.92rem;
+      margin-bottom:4px;
+      text-align:center;
+    }
+    .profile-actions{
+      display:flex;
+      gap:10px;
+      margin-top:6px;
     }
 
-    .button:hover {
-      background-color: #ffcccb;
-      color: #400000;
+    /* projects grid */
+    .section{
+      margin-top:18px;
+      display:block;
+    }
+    .section h3{
+      margin:0 0 12px 0;
+      font-size:1.15rem;
+      color:#fff;
+    }
+    .projects{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    .project{
+      background: var(--card);
+      border-radius:12px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,0.03);
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+    .project:hover{ transform: translateY(-6px); box-shadow:0 12px 30px rgba(0,0,0,0.6) }
+    .project h4{ margin:0 0 8px 0; font-size:1rem }
+    .project p{ margin:0; color:var(--muted); font-size:0.9rem }
+
+    /* contact */
+    .contact-grid{
+      display:grid;
+      grid-template-columns: 1fr 320px;
+      gap:18px;
+      margin-top:20px;
+      align-items:start;
+    }
+    .contact-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .contact-card label{ display:block; font-size:0.9rem; margin-bottom:6px; color:var(--muted) }
+    .contact-card input,
+    .contact-card textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:transparent;
+      color:#fff;
+      outline:none;
+      margin-bottom:12px;
+    }
+    .contact-card textarea{ min-height:120px; resize:vertical }
+
+    footer{
+      margin-top:28px;
+      color:var(--muted);
+      font-size:0.9rem;
+      text-align:center;
     }
 
-    .resume-box {
-      border: 2px solid #fff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 20px;
+    /* responsive */
+    @media (max-width:980px){
+      .hero{ grid-template-columns: 1fr; }
+      .projects{ grid-template-columns: repeat(2,1fr) }
+      .contact-grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width:640px){
+      .projects{ grid-template-columns: 1fr; }
+      .brand h4{ font-size:0.9rem }
+      h1{ font-size:1.8rem }
     }
 
-    .resume-title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-bottom: 8px;
+    /* small animated entrance */
+    .reveal{
+      opacity:0;
+      transform: translateY(8px) scale(.99);
+      transition: all .5s cubic-bezier(.2,.9,.3,1);
+    }
+    .reveal.show{
+      opacity:1;
+      transform: none;
     }
 
-    .footer {
-      font-size: 0.8rem;
-      margin-top: 25px;
-      color: #ccc;
+    /* small floating social (optional) */
+    .float-social{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      display:flex;
+      gap:8px;
+      z-index:50;
     }
+    .float-social a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.04);
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .float-social a:hover{ color:#fff; transform:translateY(-3px) }
   </style>
 </head>
-
 <body>
-  <div class="card">
-    <!-- Texas A&M Logo -->
-    <img src="Texas_A&M_University_seal.svg" alt="Texas A&M Logo" class="logo">
+  <div class="wrapper">
+    <header class="reveal" id="topHeader">
+      <div class="brand" aria-hidden="false">
+        <!-- small thumbnail / TAM or personal logo -->
+        <img src="Headshots-17.jpg" alt="Sanketh portrait">
+        <div>
+          <h4>Sanketh Marampally</h4>
+          <p>Mays Business School • MIS</p>
+        </div>
+      </div>
 
-    <!-- Profile Picture -->
-    <img src="Headshots-17.jpg" alt="Sanketh Marampally" class="avatar">
+      <nav aria-label="primary navigation">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#resume" class="ghost">Resume (CMD13)</a>
+      </nav>
+    </header>
 
-    <h1>Sanketh Marampally</h1>
-    <p>Business Major | Strategy Consultant @ TASK Consulting</p>
+    <!-- HERO -->
+    <main>
+      <section class="hero reveal" id="hero">
+        <div class="hero-left" id="heroLeft">
+          <div class="eyebrow">Hello — I build product & strategy</div>
+          <h1>Hi, I'm Sanketh<br><span style="font-weight:600; color:#ffdfdf">Business • Strategy • Tech</span></h1>
+          <p class="subtitle">Strategy consultant and MIS student at Texas A&amp;M. I design clear product solutions, make data-informed recommendations, and build simple user-focused web experiences.</p>
 
-    <!-- Resume Box (CMD13 placeholder) -->
-    <div class="resume-box">
-      <div class="resume-title">Resume (CMD13)</div>
-      <p>Coming soon — professional experience, leadership roles, and projects will be added here.</p>
-    </div>
+          <div class="cta-row">
+            <a class="btn" href="#contact">Work with me</a>
+            <a class="ghost" href="#projects"><i class="fa-regular fa-folder-open"></i> Projects</a>
+          </div>
+        </div>
 
-    <a href="#" class="button">View Resume</a>
+        <aside class="profile-card" id="profileCard">
+          <img src="Headshots-17.jpg" alt="Sanketh Marampally" class="avatar" />
+          <div style="text-align:center">
+            <div style="font-weight:700; font-size:1.05rem">Sanketh Marampally</div>
+            <div class="role">Strategy Consultant • TASK Consulting</div>
+            <div style="margin-top:8px;display:flex;gap:8px;justify-content:center" class="profile-actions">
+              <!-- replace these links with your real profiles or remove -->
+              <a class="ghost" href="#resume">Resume</a>
+              <a class="btn" href="mailto:sanketh@example.com">Email</a>
+            </div>
+          </div>
+        </aside>
+      </section>
 
-    <div class="footer">
-      Texas A&M University | Class of 2027
-    </div>
+      <!-- PROJECTS -->
+      <section id="projects" class="section reveal">
+        <h3>Selected Projects</h3>
+        <div class="projects" id="projectsGrid">
+          <!-- Sample project cards: replace with your real projects -->
+          <article class="project">
+            <h4>CRM for ISKCON</h4>
+            <p>Built a CRM data model to track members, attendees, and follow-ups. Django + PostgreSQL prototype.</p>
+          </article>
+
+          <article class="project">
+            <h4>Parking Appeal System</h4>
+            <p>Designed a workflow and UI for appeal submissions and ticket handling for campus parking services.</p>
+          </article>
+
+          <article class="project">
+            <h4>Farm-to-Florist Supply Plan</h4>
+            <p>Market analysis and go-to-market plan for a local flower farm to supply floral shops in the region.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="section reveal" style="margin-top:22px">
+        <h3>About</h3>
+        <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px" class="reveal">
+            <div class="contact-card">
+              <p style="margin-top:0;color:var(--muted)">I’m a business major focused on MIS and product strategy. I enjoy translating research into actionable business recommendations, leading teams, and building clean front-end experiences.</p>
+
+              <ul style="color:var(--muted);margin:12px 0 0 18px">
+                <li>Product strategy & consulting</li>
+                <li>Data analysis & dashboarding</li>
+                <li>Front-end (HTML/CSS/JS)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div style="width:320px" class="reveal">
+            <div class="contact-card">
+              <strong style="display:block;margin-bottom:10px">Quick facts</strong>
+              <div style="color:var(--muted);font-size:0.95rem;line-height:1.45">
+                • VP of Marketing — Residence Hall<br>
+                • TASK Consulting — Strategy Consultant<br>
+                • Class of 2027 — Texas A&amp;M
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="contact" class="section reveal" style="margin-top:22px">
+        <h3>Contact</h3>
+        <div class="contact-grid">
+          <form class="contact-card" id="contactForm" onsubmit="handleContact(event)">
+            <label for="name">Name</label>
+            <input id="name" name="name" placeholder="Your name" required />
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@email.com" required />
+            <label for="msg">Message</label>
+            <textarea id="msg" name="message" placeholder="Short message"></textarea>
+            <button type="submit" class="btn" style="margin-top:6px">Send message</button>
+          </form>
+
+          <aside class="contact-card">
+            <strong style="display:block;margin-bottom:10px">Get in touch</strong>
+            <div style="color:var(--muted);margin-bottom:8px">Email me at <a href="mailto:sanketh@example.com" style="color:#fff;text-decoration:underline">sanketh@example.com</a></div>
+            <div style="color:var(--muted)">Or add me on LinkedIn and share your project details — I usually respond within a few business days.</div>
+          </aside>
+        </div>
+      </section>
+
+      <footer class="reveal">
+        <div style="margin-top:24px; text-align:center; color:var(--muted)">© <span id="year"></span> Sanketh Marampally • Built with ❤️ • Texas A&amp;M University</div>
+      </footer>
+    </main>
   </div>
+
+  <!-- floating socials (optional) -->
+  <div class="float-social">
+    <a href="mailto:sanketh@example.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="#resume" title="Resume (CMD13)"><i class="fa-regular fa-file-lines"></i></a>
+  </div>
+
+  <script>
+    // small reveal-on-scroll
+    const revealEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(ent => {
+        if (ent.isIntersecting) ent.target.classList.add('show');
+      });
+    }, { threshold: 0.15 });
+
+    revealEls.forEach(el => obs.observe(el));
+
+    // dynamic year
+    document.getElementById('year').innerText = new Date().getFullYear();
+
+    // contact handler (stub)
+    function handleContact(e){
+      e.preventDefault();
+      const name = e.target.name.value.trim();
+      const email = e.target.email.value.trim();
+      const message = e.target.message.value.trim();
+      // For now we'll just show a friendly alert. To actually send, integrate with form backend (Formspree, Netlify forms, or your server).
+      alert(`Thanks ${name}! Message received (demo).\\nEmail: ${email}\\nMessage: ${message}`);
+      e.target.reset();
+    }
+
+    // keyboard shortcut: press "r" to jump to Resume (CMD13) placeholder
+    window.addEventListener('keydown', (ev) => {
+      if (ev.key.toLowerCase() === 'r') {
+        location.hash = '#resume';
+      }
+    });
+  </script>
 </body>
 </html>
