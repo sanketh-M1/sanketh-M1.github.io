@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cool Interactive Profile Card</title>
+  <title>Sanketh Marampally | Profile Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Google Fonts & Font Awesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,96 +10,111 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     body {
-      background: radial-gradient(circle at 25% 90%, #1a0035 0%, #120024 90%); 
+      background: linear-gradient(135deg, #500000, #330000);
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
       font-family: 'Orbitron', sans-serif;
+      color: white;
     }
     .card-container {
       perspective: 1200px;
     }
     .profile-card {
       width: 350px;
-      height: 220px;
+      height: 260px;
       position: relative;
       transition: transform 0.8s cubic-bezier(.7,-0.34,.32,1.36);
       transform-style: preserve-3d;
       cursor: pointer;
-      box-shadow: 0 0 30px #8200ff44;
+      box-shadow: 0 0 30px #ffb3b344;
+      border-radius: 18px;
     }
-    /* Flip classes */
     .flipped { transform: rotateY(180deg); }
+
     .card-side {
       position: absolute;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
-      background: #1a0035aa;
+      background: #3c0000cc;
       border-radius: 18px;
-      box-shadow: 0 0 12px #8200ff99, 0 0 2px #fff3;
-      color: #fff;
-      transition: box-shadow 0.3s;
+      box-shadow: 0 0 12px #ffffff44;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-family: 'Orbitron', sans-serif;
     }
-    .profile-card:hover { box-shadow: 0 0 60px #8200ffcc, 0 0 20px #fff2;}
 
     /* Front side */
-    .card-front {
-      z-index: 2;
+    .card-front { z-index: 2; }
+
+    .tamulogo {
+      width: 60px;
+      margin-bottom: 8px;
     }
+
     .avatar {
-      width: 80px;
-      height: 80px;
+      width: 85px;
+      height: 85px;
       border-radius: 50%;
       margin-bottom: 12px;
-      border: 2.5px solid #8200ff;
-      box-shadow: 0 0 15px #8200ff88;
+      border: 2.5px solid #ffffffcc;
+      box-shadow: 0 0 15px #ffffff66;
+      object-fit: cover;
+      object-position: center;
     }
+
     .name {
-      font-size: 1.6em;
+      font-size: 1.5em;
       font-weight: 600;
-      text-shadow: 0 0 6px #fff5, 0 0 8px #8200ff99;
+      text-shadow: 0 0 6px #fff5;
       margin-bottom: 2px;
     }
+
     .job {
       color: #fff7;
       font-size: 1em;
       letter-spacing: 2px;
-      text-shadow: 0 0 6px #fff2;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
-    .social-icons {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 6px;
+
+    .resume-box {
+      background: #ffffff22;
+      border: 1px solid #ffffff55;
+      border-radius: 8px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 0.9em;
+      text-align: center;
+      width: 220px;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s;
     }
-    .social-icons a {
-      color: #b785ff;
-      font-size: 1.25em;
-      transition: color 0.25s, filter 0.3s;
+    .resume-box:hover {
+      background: #ffffff33;
+      box-shadow: 0 0 10px #ffffff55;
     }
-    .social-icons a:hover { color: #e4aaff; filter: drop-shadow(0 0 8px #a45af9); }
+
     .card-btn {
-      background: linear-gradient(90deg, #8200ff, #e021cc);
+      background: linear-gradient(90deg, #7a0019, #a94442);
       color: #fff;
       border: none;
       border-radius: 6px;
       padding: 7px 19px;
       font-size: 1em;
       font-family: inherit;
-      box-shadow: 0 0 6px #8200ffcc;
+      box-shadow: 0 0 6px #ffffff44;
       cursor: pointer;
-      margin-top: 8px;
+      margin-top: 10px;
       transition: box-shadow 0.3s, background 0.2s;
     }
-    .card-btn:hover { background: linear-gradient(90deg, #e021cc, #8200ff); box-shadow: 0 0 12px #8200ffcc; }
+    .card-btn:hover { 
+      background: linear-gradient(90deg, #a94442, #7a0019); 
+      box-shadow: 0 0 12px #ffffff77; 
+    }
 
     /* Back side */
     .card-back {
@@ -108,33 +123,38 @@
       font-size: 1.05em;
       text-align: center;
       line-height: 1.45;
-      padding: 30px 15px;
-      background: #28004cfd;
-      box-shadow: 0 0 14px #ff00cc33;
+      padding: 25px 20px;
+      background: #4b0000f2;
     }
+
     .back-title {
       font-size: 1.3em;
       letter-spacing: 2px;
       font-weight: 500;
-      color: #e4aaff;
+      color: #ffcccc;
       margin-bottom: 6px;
-      text-shadow: 0 0 8px #8200ff77;
+      text-shadow: 0 0 8px #ffffff77;
     }
-    .back-text { color: #fff9; margin-bottom: 10px; }
+
+    .back-text { 
+      color: #fff9; 
+      margin-bottom: 10px; 
+    }
+
     .contact-btn {
       background: none;
-      border: 1.5px solid #e021cc;
-      color: #e021cc;
+      border: 1.5px solid #ffffff99;
+      color: #ffffffcc;
       padding: 6px 15px;
       font-size: 1em;
       border-radius: 6px;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
     }
-    .contact-btn:hover { background: #e021cc; color: #fff; }
+    .contact-btn:hover { background: #ffffffcc; color: #500000; }
 
     @media (max-width: 450px) {
-      .profile-card { width: 98vw; height: 260px; }
+      .profile-card { width: 95vw; height: 280px; }
     }
   </style>
 </head>
@@ -143,37 +163,40 @@
     <div class="profile-card" id="profileCard">
       <!-- Front Side -->
       <div class="card-side card-front">
-        <img class="avatar" src="https://randomuser.me/api/portraits/men/40.jpg" alt="Avatar">
+        <img class="tamulogo" src="https://upload.wikimedia.org/wikipedia/commons/5/5f/TAM-Logo.png" alt="Texas A&M Logo">
+        <img class="avatar" src="Headshots-17.jpg" alt="Avatar">
         <div class="name">Sanketh Marampally</div>
-        <div class="job">MIS Student</div>
-        <div class="social-icons">
-          <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
-          <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
-          <a href="https://linkedin.com/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <div class="job">Mays Business School | MIS Student</div>
+
+        <!-- Resume Box (CMD13 placeholder) -->
+        <div class="resume-box" onclick="flipCard(event)">
+          View Resume
         </div>
+
         <button class="card-btn" onclick="flipCard(event)">About Me</button>
       </div>
+
       <!-- Back Side -->
       <div class="card-side card-back">
-        <div class="back-title">About Alex</div>
+        <div class="back-title">About Sanketh</div>
         <div class="back-text">
-          🚀 Building dazzling web experiences.<br>
-          <strong>Skills:</strong> HTML, CSS, JS, UI/UX.<br>
-          Love tech, music & neon!
+          🎯 Business-minded tech enthusiast passionate about<br>
+          consulting, data, and strategy.<br>
+          <strong>Skills:</strong> HTML, CSS, JS, Research, Communication.
         </div>
-        <button class="contact-btn" onclick="window.open('mailto:alex@novaprofile.com')">
+        <button class="contact-btn" onclick="window.open('mailto:sanketh@example.com')">
           Contact Me
         </button>
       </div>
     </div>
   </div>
+
   <script>
     const card = document.getElementById('profileCard');
     function flipCard(e) {
       e.stopPropagation();
-      card.classList.add('flipped');
+      card.classList.toggle('flipped');
     }
-    // Flip back when user clicks anywhere on the back side
     card.querySelector('.card-back').addEventListener('click', function() {
       card.classList.remove('flipped');
     });
