@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanketh Marampally | MIS & AI Student</title>
+    
+    <!-- GSAP and ScrollTrigger from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Google Fonts - Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -12,13 +22,14 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #ffffff;
+            font-family: 'Montserrat', 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, #ffffff 0%, #fef2f2 100%);
             color: #1f2937;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
+        /* ==================== NAVIGATION ==================== */
         nav {
             position: fixed;
             top: 0;
@@ -29,6 +40,12 @@
             gap: 20px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .nav-link {
@@ -41,33 +58,193 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 60%;
+            height: 2px;
+            background: #800020;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            transform: translateX(-50%) scaleX(1);
         }
 
         .nav-link:hover {
             background: #f3f4f6;
-            border-color: #2563eb;
-            color: #2563eb;
+            border-color: #800020;
+            color: #800020;
         }
 
         .nav-link.active {
-            background: #2563eb;
+            background: #800020;
             color: #ffffff;
         }
 
         .page {
             display: none;
             min-height: 100vh;
-            padding: 80px 20px 40px;
         }
 
         .page.active {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* ==================== HERO VIDEO SECTION ==================== */
+        /*
+         * SCROLL-TRIGGERED VIDEO HERO SECTION
+         * - Video container takes up 200vh (2x viewport height) for scroll distance
+         * - Video is sticky and stays in view while user scrolls
+         * - GSAP ScrollTrigger syncs video playback with scroll position
+         * - As user scrolls down, video plays forward
+         * - As user scrolls up, video plays in reverse
+         */
+        .hero-section {
+            position: relative;
+            height: 200vh; /* 2x viewport for scroll distance */
+            width: 100%;
+            background: #500000; /* Deep maroon background */
+        }
+
+        .hero-video-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #500000;
+        }
+
+        /* Video element styling */
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .hero-video.loaded {
+            opacity: 1;
+        }
+
+        /* 
+         * FALLBACK TEXT ANIMATION 
+         * Used when video is loading or autoplay is disabled
+         * Mimics the SM → Sanketh Marampally transformation
+         */
+        .hero-text-fallback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .initials {
+            font-size: 15vw;
+            font-weight: 800;
+            letter-spacing: 0.5rem;
+            color: #ffffff;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .full-name {
+            font-size: 5vw;
+            font-weight: 600;
+            letter-spacing: 0.2rem;
+            color: #ffffff;
+            opacity: 0;
+            transform: scale(0.8);
+            margin-top: 2rem;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .scroll-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 50px;
+            background: linear-gradient(to bottom, #ffffff, transparent);
+            animation: scrollLineMove 2s ease-in-out infinite;
+        }
+
+        .scroll-arrow {
+            font-size: 2rem;
+            animation: bounceArrow 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLineMove {
+            0%, 100% { opacity: 0; transform: translateY(-20px); }
+            50% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Loading state */
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 1.2rem;
+            z-index: 5;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-loading.show {
+            opacity: 1;
+        }
+
+        /* ==================== HOME CONTENT SECTION ==================== */
+        .home-content-section {
+            position: relative;
+            min-height: 100vh;
+            padding: 100px 20px 40px;
+            background: linear-gradient(to bottom, #ffffff 0%, #fef2f2 100%);
         }
 
         .container {
@@ -76,7 +253,6 @@
             padding: 20px;
         }
 
-        /* HOME PAGE */
         .home-container {
             display: flex;
             flex-direction: column;
@@ -90,28 +266,64 @@
             width: 250px;
             height: 250px;
             border-radius: 50%;
-            border: 4px solid #2563eb;
-            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.2);
+            border: 4px solid #800020;
+            box-shadow: 0 10px 40px rgba(128, 0, 32, 0.25), 0 0 0 8px rgba(128, 0, 32, 0.1);
             transition: all 0.3s ease;
             object-fit: cover;
             margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .profile-image.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .profile-image:hover {
             transform: scale(1.05);
-            box-shadow: 0 15px 50px rgba(37, 99, 235, 0.3);
+            box-shadow: 0 15px 50px rgba(128, 0, 32, 0.35), 0 0 0 12px rgba(128, 0, 32, 0.15);
         }
 
         h1 {
             font-size: 4em;
             margin-bottom: 20px;
             color: #111827;
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        h1.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease 0.2s;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #800020, transparent);
         }
 
         .home-subtitle {
             font-size: 1.4em;
             color: #6b7280;
             margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .home-subtitle.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease 0.4s;
         }
 
         .contact-grid {
@@ -120,10 +332,18 @@
             gap: 20px;
             max-width: 800px;
             margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .contact-grid.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease 0.6s;
         }
 
         .contact-card {
-            background: #f9fafb;
+            background: #ffffff;
             padding: 25px;
             border-radius: 12px;
             border: 2px solid #e5e7eb;
@@ -134,17 +354,35 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #800020, #a0123a);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .contact-card:hover::before {
+            transform: scaleX(1);
         }
 
         .contact-card:hover {
-            border-color: #2563eb;
+            border-color: #800020;
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+            box-shadow: 0 10px 30px rgba(128, 0, 32, 0.15);
         }
 
         .contact-label {
             font-size: 0.85em;
-            color: #2563eb;
+            color: #800020;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
@@ -156,7 +394,7 @@
             color: #1f2937;
         }
 
-        /* ABOUT PAGE */
+        /* ==================== ABOUT PAGE ==================== */
         .about-section {
             background: #ffffff;
             border-radius: 16px;
@@ -164,12 +402,32 @@
             margin-bottom: 30px;
             border: 2px solid #e5e7eb;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: relative;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .about-section.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #800020, #a0123a, #800020);
+            border-radius: 16px 0 0 16px;
         }
 
         .about-title {
             font-size: 2.5em;
             margin-bottom: 30px;
-            color: #2563eb;
+            color: #800020;
             text-align: center;
         }
 
@@ -185,6 +443,14 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-top: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease 0.2s;
+        }
+
+        .hobbies-grid.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .hobby-card {
@@ -196,19 +462,19 @@
         }
 
         .hobby-card:hover {
-            border-color: #2563eb;
+            border-color: #800020;
             transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 8px 24px rgba(128, 0, 32, 0.1);
         }
 
         .hobby-title {
             font-size: 1.3em;
-            color: #2563eb;
+            color: #800020;
             margin-bottom: 10px;
             font-weight: 600;
         }
 
-        /* PROFESSIONAL PAGE */
+        /* ==================== PROFESSIONAL PAGE ==================== */
         .section {
             background: #ffffff;
             border-radius: 16px;
@@ -217,6 +483,14 @@
             border: 2px solid #e5e7eb;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.8s ease;
         }
 
         .section:hover {
@@ -226,8 +500,8 @@
         .section-title {
             font-size: 2em;
             margin-bottom: 25px;
-            color: #2563eb;
-            border-bottom: 3px solid #2563eb;
+            color: #800020;
+            border-bottom: 3px solid #800020;
             padding-bottom: 10px;
             display: inline-block;
         }
@@ -237,14 +511,22 @@
             padding: 25px;
             background: #f9fafb;
             border-radius: 12px;
-            border-left: 4px solid #2563eb;
+            border-left: 4px solid #800020;
             transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .experience-item.visible, .project-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s ease;
         }
 
         .experience-item:hover, .project-item:hover {
-            background: #eff6ff;
+            background: #fef2f2;
             transform: translateX(8px);
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 4px 16px rgba(128, 0, 32, 0.1);
         }
 
         .item-header {
@@ -269,7 +551,7 @@
         }
 
         .item-date {
-            color: #2563eb;
+            color: #800020;
             font-style: italic;
         }
 
@@ -292,21 +574,42 @@
         }
 
         .skill-category {
-            background: #f9fafb;
+            background: #ffffff;
             padding: 25px;
             border-radius: 12px;
             border: 2px solid #e5e7eb;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .skill-category.visible {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.6s ease;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #800020 0%, transparent 100%);
+            opacity: 0.1;
         }
 
         .skill-category:hover {
-            border-color: #2563eb;
+            border-color: #800020;
             transform: scale(1.03);
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 8px 24px rgba(128, 0, 32, 0.1);
         }
 
         .skill-category h3 {
-            color: #2563eb;
+            color: #800020;
             margin-bottom: 15px;
             font-size: 1.2em;
             font-weight: 600;
@@ -326,8 +629,8 @@
         }
 
         .skill-tag:hover {
-            background: #2563eb;
-            border-color: #2563eb;
+            background: #800020;
+            border-color: #800020;
             color: #ffffff;
             transform: translateY(-2px);
         }
@@ -345,9 +648,9 @@
         }
 
         .cert-item:hover {
-            border-color: #2563eb;
+            border-color: #800020;
             transform: translateX(8px);
-            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 4px 16px rgba(128, 0, 32, 0.1);
         }
 
         .cert-name {
@@ -362,6 +665,7 @@
             color: #6b7280;
         }
 
+        /* ==================== RESPONSIVE DESIGN ==================== */
         @media (max-width: 768px) {
             nav {
                 padding: 20px;
@@ -373,6 +677,18 @@
                 padding: 10px 16px;
             }
 
+            .hero-section {
+                height: 150vh; /* Reduced scroll distance on mobile */
+            }
+
+            .initials {
+                font-size: 20vw;
+            }
+
+            .full-name {
+                font-size: 8vw;
+            }
+
             h1 { font-size: 2.5em; }
             .home-subtitle { font-size: 1.2em; }
             .section { padding: 25px; }
@@ -380,43 +696,95 @@
             .item-header { flex-direction: column; }
             .contact-grid { grid-template-columns: 1fr; }
             .profile-image { width: 200px; height: 200px; }
+
+            .scroll-indicator {
+                bottom: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
+    <!-- Navigation -->
+    <nav id="mainNav">
         <a href="#" class="nav-link active" data-page="home">Home</a>
         <a href="#" class="nav-link" data-page="about">About Me</a>
         <a href="#" class="nav-link" data-page="professional">Experience & Skills</a>
     </nav>
 
+    <!-- HOME PAGE WITH SCROLL-TRIGGERED VIDEO HERO -->
     <div id="home" class="page active">
-        <div class="home-container">
-            <img src="Headshots-17.jpg" alt="Sanketh Marampally" class="profile-image">
-            <h1>Sanketh Marampally</h1>
-            <div class="home-subtitle">MIS Student | AI Enthusiast | Future IT Professional</div>
-            
-            <div class="contact-grid">
-                <a href="mailto:sanketh@tamu.edu" class="contact-card">
-                    <span class="contact-label">University Email</span>
-                    <span class="contact-value">sanketh@tamu.edu</span>
-                </a>
-                <a href="mailto:sanketh.marampally@gmail.com" class="contact-card">
-                    <span class="contact-label">Personal Email</span>
-                    <span class="contact-value">sanketh.marampally@gmail.com</span>
-                </a>
-                <a href="http://www.linkedin.com/in/sankethm1" target="_blank" class="contact-card">
-                    <span class="contact-label">LinkedIn</span>
-                    <span class="contact-value">linkedin.com/in/sankethm1</span>
-                </a>
-                <div class="contact-card">
-                    <span class="contact-label">Location</span>
-                    <span class="contact-value">Austin, Texas</span>
+        <!-- Hero Video Section with Scroll Animation -->
+        <section class="hero-section">
+            <div class="hero-video-container">
+                <!-- 
+                    VIDEO ELEMENT
+                    Replace "your-video-file.mp4" with your actual Gemini Veo video file
+                    The video should show "SM" forming and transforming into "Sanketh Marampally"
+                    Recommended: Export as MP4, H.264 codec, 1920x1080 or higher
+                -->
+                <video 
+                    class="hero-video" 
+                    id="heroVideo" 
+                    muted 
+                    playsinline
+                    preload="auto">
+                    <source src="intro-video.mp4" type="video/mp4">
+                    <!-- Fallback for older browsers -->
+                    <source src="your-video-file.webm" type="video/webm">
+                </video>
+                
+                <!-- Loading Indicator -->
+                <div class="video-loading show" id="videoLoading">Loading...</div>
+                
+                <!-- 
+                    TEXT FALLBACK ANIMATION
+                    This appears if video fails to load or autoplay is blocked
+                    Uses GSAP to animate SM → Sanketh Marampally transformation
+                -->
+                <div class="hero-text-fallback" id="textFallback">
+                    <div class="initials" id="initials">SM</div>
+                    <div class="full-name" id="fullName">SANKETH MARAMPALLY</div>
+                </div>
+                
+                <!-- Scroll Indicator -->
+                <div class="scroll-indicator">
+                    <span class="scroll-text">Scroll</span>
+                    <div class="scroll-line"></div>
+                    <div class="scroll-arrow">↓</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home Content Section (Profile, Contact Info) -->
+        <div class="home-content-section">
+            <div class="home-container">
+                <img src="Headshots-17.png" alt="Sanketh Marampally" class="profile-image" id="profileImage">
+                <h1 id="mainHeading">Sanketh Marampally</h1>
+                <div class="home-subtitle" id="subtitle">MIS Student | AI Enthusiast | Future IT Professional</div>
+                
+                <div class="contact-grid" id="contactGrid">
+                    <a href="mailto:sanketh@tamu.edu" class="contact-card">
+                        <span class="contact-label">University Email</span>
+                        <span class="contact-value">sanketh@tamu.edu</span>
+                    </a>
+                    <a href="mailto:sanketh.marampally@gmail.com" class="contact-card">
+                        <span class="contact-label">Personal Email</span>
+                        <span class="contact-value">sanketh.marampally@gmail.com</span>
+                    </a>
+                    <a href="http://www.linkedin.com/in/sankethm1" target="_blank" class="contact-card">
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-value">linkedin.com/in/sankethm1</span>
+                    </a>
+                    <div class="contact-card">
+                        <span class="contact-label">Location</span>
+                        <span class="contact-value">Austin, Texas</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ABOUT ME PAGE -->
     <div id="about" class="page">
         <div class="container">
             <div class="about-section">
@@ -433,7 +801,7 @@
                     </p>
                 </div>
 
-                <h3 style="font-size: 2em; color: #2563eb; margin-bottom: 20px; font-weight: 600;">Interests & Hobbies</h3>
+                <h3 style="font-size: 2em; color: #800020; margin-bottom: 20px; font-weight: 600;">Interests & Hobbies</h3>
                 <div class="hobbies-grid">
                     <div class="hobby-card">
                         <div class="hobby-title">Technology & Innovation</div>
@@ -456,6 +824,7 @@
         </div>
     </div>
 
+    <!-- PROFESSIONAL PAGE -->
     <div id="professional" class="page">
         <div class="container">
             <section class="section">
@@ -601,7 +970,7 @@
 
             <section class="section">
                 <h2 class="section-title">Education</h2>
-                <div class="experience-item" style="border-left: 4px solid #2563eb;">
+                <div class="experience-item" style="border-left: 4px solid #800020;">
                     <div class="item-header">
                         <div>
                             <div class="item-title">Texas A&M University</div>
@@ -611,7 +980,7 @@
                         <div class="item-date">Expected May 2027</div>
                     </div>
                     <div class="item-description">
-                        <p style="font-size: 1.2em; color: #2563eb; font-weight: 600;"><strong>GPA: 4.0/4.0</strong></p>
+                        <p style="font-size: 1.2em; color: #800020; font-weight: 600;"><strong>GPA: 4.0/4.0</strong></p>
                         <p style="margin-top: 10px;">Relevant Coursework: Database Systems, Business Analytics, Cloud Computing, AI Applications in Business</p>
                     </div>
                 </div>
@@ -624,7 +993,233 @@
         </div>
     </div>
 
+    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
+        // ==================== GSAP SCROLLTRIGGER SETUP ====================
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ==================== VARIABLES ====================
+        const heroVideo = document.getElementById('heroVideo');
+        const videoLoading = document.getElementById('videoLoading');
+        const textFallback = document.getElementById('textFallback');
+        const initials = document.getElementById('initials');
+        const fullName = document.getElementById('fullName');
+        const mainNav = document.getElementById('mainNav');
+
+        let videoLoaded = false;
+        let useVideoAnimation = false;
+
+        // ==================== VIDEO SETUP ====================
+        /*
+         * Check if video can load and autoplay
+         * If successful, use video; otherwise, use text fallback animation
+         */
+        heroVideo.addEventListener('loadeddata', function() {
+            videoLoaded = true;
+            videoLoading.classList.remove('show');
+            heroVideo.classList.add('loaded');
+            
+            // Try to play video
+            const playPromise = heroVideo.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    // Autoplay started successfully
+                    heroVideo.pause(); // Pause immediately, ScrollTrigger will control playback
+                    heroVideo.currentTime = 0;
+                    useVideoAnimation = true;
+                    textFallback.style.display = 'none';
+                    setupVideoScrollAnimation();
+                }).catch(error => {
+                    // Autoplay blocked, use text fallback
+                    console.log('Autoplay blocked, using text fallback');
+                    useVideoAnimation = false;
+                    heroVideo.style.display = 'none';
+                    setupTextFallbackAnimation();
+                });
+            }
+        });
+
+        // Handle video loading errors
+        heroVideo.addEventListener('error', function() {
+            console.log('Video failed to load, using text fallback');
+            videoLoading.textContent = 'Loading text animation...';
+            setTimeout(() => {
+                videoLoading.classList.remove('show');
+                heroVideo.style.display = 'none';
+                setupTextFallbackAnimation();
+            }, 500);
+        });
+
+        // Timeout fallback if video takes too long
+        setTimeout(() => {
+            if (!videoLoaded && !useVideoAnimation) {
+                console.log('Video timeout, using text fallback');
+                videoLoading.classList.remove('show');
+                heroVideo.style.display = 'none';
+                setupTextFallbackAnimation();
+            }
+        }, 3000);
+
+        // ==================== VIDEO SCROLL ANIMATION ====================
+        /*
+         * GSAP ScrollTrigger syncs video playback with scroll position
+         * - scrub: true = smooth sync with scroll
+         * - Video plays forward on scroll down, backward on scroll up
+         * - Opacity fades out as user scrolls past the hero section
+         */
+        function setupVideoScrollAnimation() {
+            const videoDuration = heroVideo.duration;
+            
+            gsap.to(heroVideo, {
+                currentTime: videoDuration,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1, // Smooth scrubbing (1 second lag)
+                    onUpdate: (self) => {
+                        // Update video time based on scroll progress
+                        if (heroVideo.paused) {
+                            heroVideo.play();
+                        }
+                        heroVideo.currentTime = self.progress * videoDuration;
+                        
+                        // Pause when not scrolling
+                        clearTimeout(window.scrollTimeout);
+                        window.scrollTimeout = setTimeout(() => {
+                            if (!heroVideo.paused) {
+                                heroVideo.pause();
+                            }
+                        }, 100);
+                    }
+                }
+            });
+
+            // Fade out video as user scrolls past
+            gsap.to(".hero-video", {
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "60% top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Fade out scroll indicator
+            gsap.to(".scroll-indicator", {
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "30% top",
+                    end: "50% top",
+                    scrub: true
+                }
+            });
+        }
+
+        // ==================== TEXT FALLBACK ANIMATION ====================
+        /*
+         * CSS/GSAP animation that mimics the video effect
+         * SM (initials) transforms into SANKETH MARAMPALLY (full name)
+         * Triggered by scroll position
+         */
+        function setupTextFallbackAnimation() {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: 1,
+                    onUpdate: (self) => {
+                        // At 0-40% scroll: Show initials
+                        // At 40-100% scroll: Transform to full name
+                        const progress = self.progress;
+                        
+                        if (progress < 0.4) {
+                            // Show initials phase
+                            gsap.to(initials, {
+                                opacity: 1,
+                                scale: 1,
+                                duration: 0.3
+                            });
+                            gsap.to(fullName, {
+                                opacity: 0,
+                                scale: 0.8,
+                                duration: 0.3
+                            });
+                        } else {
+                            // Transform to full name
+                            const transformProgress = (progress - 0.4) / 0.6;
+                            gsap.to(initials, {
+                                opacity: 1 - transformProgress,
+                                scale: 1 - (transformProgress * 0.3),
+                                duration: 0.3
+                            });
+                            gsap.to(fullName, {
+                                opacity: transformProgress,
+                                scale: 0.8 + (transformProgress * 0.2),
+                                duration: 0.3
+                            });
+                        }
+                    }
+                }
+            });
+
+            // Fade out entire text section at the end
+            gsap.to(".hero-text-fallback", {
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "70% top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // Fade out scroll indicator
+            gsap.to(".scroll-indicator", {
+                opacity: 0,
+                scrollTrigger: {
+                    trigger: ".hero-section",
+                    start: "30% top",
+                    end: "50% top",
+                    scrub: true
+                }
+            });
+        }
+
+        // ==================== HOME CONTENT ANIMATIONS ====================
+        /*
+         * Animate profile image, heading, subtitle, and contact cards
+         * when they come into view after scrolling past hero
+         */
+        const homeContentObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        // Observe home content elements
+        const homeElements = [
+            document.getElementById('profileImage'),
+            document.getElementById('mainHeading'),
+            document.getElementById('subtitle'),
+            document.getElementById('contactGrid')
+        ];
+
+        homeElements.forEach(el => {
+            if (el) homeContentObserver.observe(el);
+        });
+
+        // ==================== NAVIGATION ====================
         const navLinks = document.querySelectorAll('.nav-link');
         const pages = document.querySelectorAll('.page');
 
@@ -632,27 +1227,120 @@
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 
+                // Update active states
                 navLinks.forEach(l => l.classList.remove('active'));
                 pages.forEach(p => p.classList.remove('active'));
                 
                 link.classList.add('active');
                 
+                // Show selected page
                 const pageId = link.getAttribute('data-page');
                 document.getElementById(pageId).classList.add('active');
                 
+                // Scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Reset video if returning to home
+                if (pageId === 'home' && useVideoAnimation) {
+                    setTimeout(() => {
+                        heroVideo.currentTime = 0;
+                        ScrollTrigger.refresh();
+                    }, 100);
+                }
+                
+                // Trigger scroll animations for new page
+                setTimeout(() => {
+                    observeElements();
+                }, 200);
             });
         });
 
+        // Navigation background change on scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                mainNav.classList.add('scrolled');
+            } else {
+                mainNav.classList.remove('scrolled');
+            }
+        });
+
+        // ==================== SCROLL ANIMATIONS FOR OTHER PAGES ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        function observeElements() {
+            const elements = document.querySelectorAll(
+                '.section, .about-section, .hobbies-grid, ' +
+                '.experience-item, .project-item, .skill-category'
+            );
+            elements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Initial observation
+        window.addEventListener('load', () => {
+            observeElements();
+        });
+
+        // Observe elements on page load
+        observeElements();
+
+        // ==================== SKILL TAG INTERACTIONS ====================
         document.querySelectorAll('.skill-tag').forEach(tag => {
             tag.addEventListener('click', function() {
-                this.style.background = '#2563eb';
+                this.style.background = '#800020';
                 this.style.color = '#ffffff';
+                this.style.borderColor = '#800020';
                 setTimeout(() => {
                     this.style.background = '#ffffff';
                     this.style.color = '#1f2937';
+                    this.style.borderColor = '#e5e7eb';
                 }, 300);
             });
+        });
+
+        // ==================== PERFORMANCE OPTIMIZATION ====================
+        /*
+         * Pause video when not in viewport to save resources
+         * Resume when scrolled back into view
+         */
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting && useVideoAnimation) {
+                    heroVideo.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+
+        videoObserver.observe(document.querySelector('.hero-section'));
+
+        // ==================== MOBILE OPTIMIZATIONS ====================
+        // Reduce scroll distance and effects on mobile devices
+        if (window.innerWidth < 768) {
+            console.log('Mobile device detected - using optimized settings');
+            // Mobile-specific optimizations handled via CSS media queries
+        }
+
+        // Refresh ScrollTrigger on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                ScrollTrigger.refresh();
+            }, 250);
         });
     </script>
 </body>
